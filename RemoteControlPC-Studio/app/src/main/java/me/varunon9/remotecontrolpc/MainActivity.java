@@ -38,6 +38,7 @@ import me.varunon9.remotecontrolpc.poweroff.PowerOffFragment;
 import me.varunon9.remotecontrolpc.presentation.PresentationFragment;
 import me.varunon9.remotecontrolpc.server.Server;
 import me.varunon9.remotecontrolpc.touchpad.TouchpadFragment;
+import me.varunon9.remotecontrolpc.mediacontrol.MediaControlFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -182,6 +183,8 @@ public class MainActivity extends AppCompatActivity
             fragment = new PresentationFragment();
         } else if (id == R.id.nav_power_off) {
             fragment = new PowerOffFragment();
+        } else if (id == R.id.nav_mediacontrol) {
+            fragment = new MediaControlFragment();
         } else if (id == R.id.action_help) {
             fragment = new HelpFragment();
         } else if (id == R.id.action_live_screen) {

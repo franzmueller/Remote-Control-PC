@@ -20,7 +20,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_help">HelpActivity</string>
     <string name="title_activity_music_control">MusicControl</string>
+    <string name="mediacontrol">Media Control</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="space_key">Space Key</string>
 </resources>

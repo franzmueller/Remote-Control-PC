@@ -31,6 +31,10 @@
             android:icon="@drawable/ic_media_player"
             android:title="Media Player" />
         <item
+            android:id="@+id/nav_mediacontrol"
+            android:icon="@drawable/ic_volume_up_black_24dp"
+            android:title="Media Control" />
+        <item
             android:id="@+id/nav_presentation"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Presentation" />

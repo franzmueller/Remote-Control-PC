@@ -10,6 +10,8 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import static java.awt.event.KeyEvent.*;
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.keyboard.NativeKeyEvent;
 
 /**
  *
@@ -17,7 +19,9 @@ import static java.awt.event.KeyEvent.*;
  */
 
 public class MouseKeyboardControl {
-    Robot robot;
+    Robot robot;  
+    private ContinuousPusher cpVolDown, cpVolUp;
+    private final Object cpVolDownMonitor, cpVolUpMonitor;
     public MouseKeyboardControl() {
         try {
             robot = new Robot();
@@ -26,6 +30,10 @@ public class MouseKeyboardControl {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error Occured!");
         }
+        cpVolDownMonitor = new Object();
+        cpVolUpMonitor = new Object();
+        cpVolDown = new ContinuousPusher(NativeKeyEvent.VC_VOLUME_DOWN, cpVolDownMonitor);
+        cpVolUp = new ContinuousPusher(NativeKeyEvent.VC_VOLUME_UP, cpVolUpMonitor);
     }
     public void leftClick() {
         robot.mousePress(InputEvent.BUTTON1_MASK);
@@ -205,6 +213,37 @@ public class MouseKeyboardControl {
         robot.delay(10);
         robot.keyRelease(keyCode);
     }
+        
+    /**
+     * 
+     * @param keyCode a constant from NativeKeyEvent
+     */
+    public void typeNativeKey(int keyCode){
+        //Usage of NATIVE_KEY_PRESSED and NATIVE_KEY_RELEASED is needed for CHAR_UNDEFINED (which is the use case here)
+        NativeKeyEvent nke = new NativeKeyEvent(NativeKeyEvent.NATIVE_KEY_PRESSED,0,0,keyCode,NativeKeyEvent.CHAR_UNDEFINED);
+        GlobalScreen.postNativeEvent(nke);
+        robot.delay(10);
+        nke = new NativeKeyEvent(NativeKeyEvent.NATIVE_KEY_RELEASED,0,0,keyCode,NativeKeyEvent.CHAR_UNDEFINED);
+        GlobalScreen.postNativeEvent(nke);
+    }
+    /**
+     * 
+     * @param keyCode a constant from NativeKeyEvent
+     */
+    public void pressNativeKey(int keyCode) { //keyCode should be a constant from NativeKeyEvent
+        NativeKeyEvent nke = new NativeKeyEvent(NativeKeyEvent.NATIVE_KEY_PRESSED,0,0,keyCode,NativeKeyEvent.CHAR_UNDEFINED);
+        GlobalScreen.postNativeEvent(nke);
+    }
+    /**
+     * 
+     * @param keyCode a constant from NativeKeyEvent
+     */
+    public void releaseNativeKey(int keyCode) {
+        //keyCode should be a constant from NativeKeyEvent
+        NativeKeyEvent nke = new NativeKeyEvent(NativeKeyEvent.NATIVE_KEY_RELEASED,0,0,keyCode,NativeKeyEvent.CHAR_UNDEFINED);
+        GlobalScreen.postNativeEvent(nke);
+    }
+    
     public void pressLeftArrowKey() {
         typeCharacter(VK_LEFT);
     }
@@ -219,5 +258,48 @@ public class MouseKeyboardControl {
     }
     public void pressF5Key() {
         typeCharacter(VK_F5);
+    }      
+    public void pressVolDownKey() {        
+        if(!cpVolDown.isAlive())
+            cpVolDown.start();
+        else{
+            synchronized(cpVolDownMonitor){
+                cpVolDownMonitor.notify();
+            }
+        }            
+    }    
+    public void releaseVolDownKey() {       
+        if(cpVolDown.isAlive()){
+            cpVolDown.interrupt();            
+        }
+    }       
+    public void pressVolUpKey() {
+        if(!cpVolUp.isAlive())
+           cpVolUp.start();
+        else{
+           synchronized(cpVolUpMonitor){
+               cpVolUpMonitor.notify();
+           }
+        }
+    }    
+    public void releaseVolUpKey() {
+        if(cpVolUp.isAlive()){
+            cpVolUp.interrupt();           
+        }
+    }
+    public void typePlayKey() {
+        typeNativeKey(NativeKeyEvent.VC_MEDIA_PLAY);
+    }   
+    public void typeStopKey() {
+        typeNativeKey(NativeKeyEvent.VC_MEDIA_STOP);
+    } 
+    public void typePreviousKey() {
+        typeNativeKey(NativeKeyEvent.VC_MEDIA_PREVIOUS);
+    } 
+    public void typeNextKey() {
+        typeNativeKey(NativeKeyEvent.VC_MEDIA_NEXT);
+    }
+    public void typeMuteKey() {
+        typeNativeKey(NativeKeyEvent.VC_VOLUME_MUTE);
     }
 }

@@ -218,6 +218,33 @@ public class Server {
                                 new Screenshot().sendScreenshot(
                                         MainScreenController.objectOutputStream
                                 );
+                                break;                            
+                            case "PRESS_VOL_DOWN":
+                                mouseControl.pressVolDownKey();                                
+                                break;
+                            case "RELEASE_VOL_DOWN":
+                                mouseControl.releaseVolDownKey();
+                                break;                            
+                            case "PRESS_VOL_UP":
+                                mouseControl.pressVolUpKey();
+                                break;
+                            case "RELEASE_VOL_UP":
+                                mouseControl.releaseVolUpKey();
+                                break;
+                            case "PLAY_KEY":
+                                mouseControl.typePlayKey();
+                                break;
+                            case "STOP_KEY":
+                                mouseControl.typeStopKey();
+                                break;
+                            case "PREVIOUS_KEY":
+                                mouseControl.typePreviousKey();
+                                break;
+                            case "NEXT_KEY":
+                                mouseControl.typeNextKey();
+                                break;
+                            case "MUTE_KEY":
+                                mouseControl.typeMuteKey();
                                 break;
                         }
                     } else {

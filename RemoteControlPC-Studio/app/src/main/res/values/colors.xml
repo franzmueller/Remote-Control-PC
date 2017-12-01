@@ -7,4 +7,5 @@
     <color name="theme_color">#4FC3F7</color>
     <color name="theme_color_dark">#3f8eb1</color>
     <color name="colorPrimaryLight">#FF586CDC</color>
+    <color name="lightGrey">#cccccc</color>
 </resources>
